@@ -1,0 +1,22 @@
+services:
+  gcai-connector:
+    image: gcai-connector:latest
+    container_name: GCAIConnector
+
+    environment:
+      - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
+      - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
+      - CAMUNDA_CONNECTOR_POLLING_ENABLED=false
+      - CAMUNDA_CONNECTOR_WEBHOOK_ENABLED=false
+      - SPRING_MAIN_WEB-APPLICATION-TYPE=none
+      - OPERATE_CLIENT_ENABLED=false
+
+    networks:
+      - camunda-platform_camunda-platform
+    volumes:
+      - type: bind
+        source: C:/Users/HariharanB/Desktop/Demo
+        target: /gcai
+networks:
+  camunda-platform_camunda-platform:
+    external: true

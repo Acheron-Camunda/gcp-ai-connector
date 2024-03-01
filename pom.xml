@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.acheron.connector</groupId>
+	<artifactId>GoogleCloudAI</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<camunda.version>8.4.1</camunda.version>
+		<gcai.version>3.35.0</gcai.version>
+		<vision-version>3.32.0</vision-version>
+		<video-version>2.33.0</video-version>
+		<gcs-version>2.32.1</gcs-version>
+		<slf4j-version>2.0.11</slf4j-version>
+		<lombok-version>1.18.30</lombok-version>
+		<version.assertj>3.25.3</version.assertj>
+		<version.junit>5.10.2</version.junit>
+		<version.mockito>5.10.0</version.mockito>
+
+		<mycila-plugin.version>4.3</mycila-plugin.version>
+		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.camunda.connector</groupId>
+			<artifactId>connector-core</artifactId>
+			<version>${camunda.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.camunda.connector</groupId>
+			<artifactId>connector-validation</artifactId>
+			<version>${camunda.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.camunda.connector</groupId>
+			<artifactId>connector-test</artifactId>
+			<version>${camunda.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-aiplatform</artifactId>
+			<version>${gcai.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-vision</artifactId>
+			<version>${vision-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-video-intelligence</artifactId>
+			<version>${video-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>${gcs-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${version.assertj}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>google-cloud-ai</finalName>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>${mycila-plugin.version}</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<version>${maven-assembly-plugin.version}</version>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>21</source>
+					<target>21</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

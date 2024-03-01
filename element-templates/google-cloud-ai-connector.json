@@ -1,0 +1,588 @@
+{
+	"$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+	"name": "Google Cloud AI connector",
+	"id": "com.acheron.connector:gcai:v1",
+	"description": "Execute Google Cloud Functionalities",
+	"version": 1,
+	"documentationRef": "https://docs.camunda.io/docs/components/connectors/out-of-the-box-connectors/available-connectors-overview/",
+	"icon": {
+		"contents": "data:image/png;base64,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"
+	},
+	"appliesTo": [
+		"bpmn:Task"
+	],
+	"elementType": {
+		"value": "bpmn:ServiceTask"
+	},
+	"category": {
+		"id": "connectors",
+		"name": "Connectors"
+	},
+	"groups": [
+		{
+			"id": "authentication",
+			"label": "Authentication"
+		},
+		{
+			"id": "operation",
+			"label": "Operation"
+		},
+		{
+			"id": "data",
+			"label": "Input Data"
+		},
+		{
+			"id": "output",
+			"label": "Output Mapping"
+		},
+		{
+			"id": "errors",
+			"label": "Error Handling"
+		}
+	],
+	"properties": [
+		{
+			"type": "Hidden",
+			"value": "com.acheron.connector:gcai:1",
+			"binding": {
+				"type": "zeebe:taskDefinition:type"
+			}
+		},
+		{
+			"label": "Json File key",
+			"description": "Provide path for Json file key ",
+			"group": "authentication",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "authentication.jsonFileAsString"
+			},
+			"constraints": {
+				"notEmpty": true
+			}
+		},
+		{
+			"id": "operationType",
+			"group": "operation",
+			"type": "Dropdown",
+			"value": "PROMPT",
+			"choices": [
+				{
+					"name": "Execute Prompt",
+					"value": "PROMPT"
+				},
+				{
+					"name": "Pretrained Image Labeling",
+					"value": "PRETRAINEDIMAGE"
+				},
+				{
+					"name": "Pretrained Object Tracking in a video",
+					"value": "PRETRAINEDVIDEO"
+				},
+				{
+					"name": "Run a batch prediction on a custom trained model",
+					"value": "CUSTOMBATCH"
+				},
+				{
+					"name": "Get the job state of a batch prediction job",
+					"value": "GETJOBSTATE"
+				},
+				{
+					"name": "Get the GCS Output URI",
+					"value": "GETURI"
+				}
+			],
+			"binding": {
+				"type": "zeebe:input",
+				"name": "operation.operationType",
+				"key": "operation.operationType"
+			},
+			"constraints": {
+				"notEmpty": true
+			}
+		},
+		{
+			"label": "Prompt Input",
+			"description": "Provide Prompt",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.prompt.promptInput"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PROMPT"
+			}
+		},
+		{
+			"label": "Temperature",
+			"description": "Set the level of randomness in the generated text (0-1). Lower values produce more predictable results, while higher values are more creative and unpredictable. Example: 0.5 for balanced randomness.",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.prompt.temperature"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PROMPT"
+			}
+		},
+		{
+			"label": "Maximum Output Tokens",
+			"description": "Set the maximum number of tokens (roughly equivalent to four characters each) the model can generate in its response. Specify a value between 1 and 2048 (depending on the model).",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.prompt.maxOutputTokens"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PROMPT"
+			}
+		},
+		{
+			"label": "projectId",
+			"description": "Enter the Google Cloud project ID where your Vertex AI resources are located",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.prompt.projectId"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PROMPT"
+			}
+		},
+		{
+			"label": "Location",
+			"description": "Specify the geographic location (region) where Generative AI on Vertex AI is available.",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.prompt.location"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PROMPT"
+			}
+		},
+		{
+			"label": "model",
+			"description": "Enter the exact name of the Vertex AI model you want to use for prompt predictions",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.prompt.model"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PROMPT"
+			}
+		},
+		{
+			"label": "Test Image Path",
+			"description": "Provide the path where the image file is",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.testFilePath"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDIMAGE"
+			}
+		},
+		{
+			"label": "Bucket Name",
+			"description": "Enter the bucket name in GCS to upload",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.bucketName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDIMAGE"
+			}
+		},
+		{
+			"label": "Path In Bucket",
+			"description": "Provide the path where the file should be uploaded and loaded from",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.pathInBucket"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDIMAGE"
+			}
+		},
+		{
+			"label": "Test video Path",
+			"description": "Provide the path where the video file is",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.testFilePath"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDVIDEO"
+			}
+		},
+		{
+			"label": "Bucket Name",
+			"description": "Enter the bucket name in GCS to upload",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.bucketName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDVIDEO"
+			}
+		},
+		{
+			"label": "Path In Bucket",
+			"description": "Provide the path where the file should be uploaded and loaded from",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.pathInBucket"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDVIDEO"
+			}
+		},
+		{
+			"label": "Bucket Name",
+			"description": "Enter the bucket name in GCS to upload",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.pretrainedDetection.bucketName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "PRETRAINEDVIDEO"
+			}
+		},
+		{
+			"label": "Project Name",
+			"description": "Enter the project name under which the model is trained",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.customPrediction.projectName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "CUSTOMBATCH"
+			}
+		},
+		{
+			"label": "Display Name of the Batch Process",
+			"description": "Enter the display name in Vertex AI for the current batch prediction",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.customPrediction.displayName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "CUSTOMBATCH"
+			}
+		},
+		{
+			"label": "Model ID",
+			"description": "Enter the ID of the custom trained model in Vertex AI",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.customPrediction.modelId"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "CUSTOMBATCH"
+			}
+		},
+		{
+			"label": "GCS Source URI",
+			"description": "Enter the GCS path where the input JSONL file is present",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.customPrediction.gcsSourceUri"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "CUSTOMBATCH"
+			}
+		},
+		{
+			"label": "GCS Destination URI Prefix",
+			"description": "Enter the GCS path where the output JSONL file should be saved",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.customPrediction.gcsDestinationOutputUriPrefix"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "CUSTOMBATCH"
+			}
+		},
+		{
+			"label": "Location",
+			"description": "Enter the location. Make sure the location of GCS bucket is the same as the location where the custom model is trained.",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.customPrediction.location"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "CUSTOMBATCH"
+			}
+		},
+		{
+			"label": "Project Name",
+			"description": "Enter the project name under which the model is trained",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.jobOutput.projectName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "GETJOBSTATE"
+			}
+		},
+		{
+			"label": "Batch Prediction Job Id",
+			"description": "Enter the Id of the triggered Batch Prediction job",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.jobOutput.batchPredictionJobId"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "GETJOBSTATE"
+			}
+		},
+		{
+			"label": "Location",
+			"description": "Enter the location where the custom model is trained.",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.jobOutput.location"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "GETJOBSTATE"
+			}
+		},
+		{
+			"label": "Project Name",
+			"description": "Enter the project name under which the model is trained",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.jobOutput.projectName"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "GETURI"
+			}
+		},
+		{
+			"label": "Batch Prediction Job Id",
+			"description": "Enter the Id of the triggered Batch Prediction job",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.jobOutput.batchPredictionJobId"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "GETURI"
+			}
+		},
+		{
+			"label": "Location",
+			"description": "Enter the location where the custom model is trained.",
+			"group": "data",
+			"type": "String",
+			"feel": "optional",
+			"binding": {
+				"type": "zeebe:input",
+				"name": "data.jobOutput.location"
+			},
+			"constraints": {
+				"notEmpty": true
+			},
+			"condition": {
+				"property": "operationType",
+				"equals": "GETURI"
+			}
+		},
+		{
+			"label": "Result Variable",
+			"description": "Name of variable to store the response in",
+			"group": "output",
+			"type": "String",
+			"binding": {
+				"type": "zeebe:taskHeader",
+				"key": "resultVariable"
+			}
+		},
+		{
+			"label": "Result Expression",
+			"description": "Expression to map the response into process variables",
+			"group": "output",
+			"type": "Text",
+			"feel": "required",
+			"binding": {
+				"type": "zeebe:taskHeader",
+				"key": "resultExpression"
+			}
+		},
+		{
+			"label": "Error Expression",
+			"description": "Expression to handle errors. Details in the <a href=\"https://docs.camunda.io/docs/components/connectors/use-connectors/\" target=\"_blank\">documentation</a>.",
+			"group": "errors",
+			"type": "Text",
+			"feel": "required",
+			"binding": {
+				"type": "zeebe:taskHeader",
+				"key": "errorExpression"
+			}
+		}
+	]
+}
